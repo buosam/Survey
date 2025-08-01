@@ -1,0 +1,30 @@
+{
+  "name": "survey-app",
+  "version": "1.0.0",
+  "description": "A simple web-based survey application that allows users to create and respond to surveys",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8080",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "echo \"No linting configured yet\""
+  },
+  "keywords": [
+    "survey",
+    "web-application",
+    "javascript",
+    "html",
+    "css"
+  ],
+  "author": "Survey App Contributors",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/buosam/Survey.git"
+  },
+  "bugs": {
+    "url": "https://github.com/buosam/Survey/issues"
+  },
+  "homepage": "https://github.com/buosam/Survey#readme",
+  "devDependencies": {},
+  "dependencies": {}
+}

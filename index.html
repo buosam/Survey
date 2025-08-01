@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Application</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Survey Application</h1>
+            <nav>
+                <button id="create-btn" class="nav-btn active">Create Survey</button>
+                <button id="take-btn" class="nav-btn">Take Survey</button>
+                <button id="results-btn" class="nav-btn">View Results</button>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Create Survey Section -->
+            <section id="create-section" class="section active">
+                <h2>Create a New Survey</h2>
+                <form id="survey-form">
+                    <div class="form-group">
+                        <label for="survey-title">Survey Title:</label>
+                        <input type="text" id="survey-title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="survey-description">Description:</label>
+                        <textarea id="survey-description" rows="3"></textarea>
+                    </div>
+
+                    <div id="questions-container">
+                        <h3>Questions</h3>
+                        <div class="question-item">
+                            <div class="form-group">
+                                <label>Question 1:</label>
+                                <input type="text" class="question-text" placeholder="Enter your question" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Type:</label>
+                                <select class="question-type">
+                                    <option value="text">Text</option>
+                                    <option value="multiple-choice">Multiple Choice</option>
+                                    <option value="rating">Rating (1-5)</option>
+                                </select>
+                            </div>
+                            <div class="choices-container" style="display: none;">
+                                <label>Choices (one per line):</label>
+                                <textarea class="question-choices" rows="3" placeholder="Option 1&#10;Option 2&#10;Option 3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" id="add-question-btn">Add Question</button>
+                    <button type="submit">Create Survey</button>
+                </form>
+            </section>
+
+            <!-- Take Survey Section -->
+            <section id="take-section" class="section">
+                <h2>Take a Survey</h2>
+                <div id="survey-list">
+                    <p>No surveys available. Create one first!</p>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section id="results-section" class="section">
+                <h2>Survey Results</h2>
+                <div id="results-container">
+                    <p>No results available yet.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

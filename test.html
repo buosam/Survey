@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey App Tests</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test { margin: 10px 0; padding: 10px; border: 1px solid #ddd; }
+        .pass { background-color: #d4edda; border-color: #c3e6cb; }
+        .fail { background-color: #f8d7da; border-color: #f5c6cb; }
+    </style>
+</head>
+<body>
+    <h1>Survey Application Tests</h1>
+    <div id="test-results"></div>
+
+    <script src="script.js"></script>
+    <script>
+        // Simple test suite for the Survey Application
+        class TestSuite {
+            constructor() {
+                this.tests = [];
+                this.passed = 0;
+                this.failed = 0;
+            }
+
+            test(name, testFunction) {
+                try {
+                    testFunction();
+                    this.passed++;
+                    this.addResult(name, true);
+                } catch (error) {
+                    this.failed++;
+                    this.addResult(name, false, error.message);
+                }
+            }
+
+            addResult(name, passed, error = '') {
+                const resultsDiv = document.getElementById('test-results');
+                const testDiv = document.createElement('div');
+                testDiv.className = `test ${passed ? 'pass' : 'fail'}`;
+                testDiv.innerHTML = `
+                    <strong>${passed ? '✓' : '✗'} ${name}</strong>
+                    ${error ? `<br><small>Error: ${error}</small>` : ''}
+                `;
+                resultsDiv.appendChild(testDiv);
+            }
+
+            runTests() {
+                // Clear localStorage for clean tests
+                localStorage.clear();
+
+                // Test 1: SurveyApp class exists
+                this.test('SurveyApp class exists', () => {
+                    if (typeof SurveyApp === 'undefined') {
+                        throw new Error('SurveyApp class not found');
+                    }
+                });
+
+                // Test 2: SurveyApp can be instantiated
+                this.test('SurveyApp can be instantiated', () => {
+                    const app = new SurveyApp();
+                    if (!app || typeof app !== 'object') {
+                        throw new Error('Failed to create SurveyApp instance');
+                    }
+                });
+
+                // Test 3: Initial state is correct
+                this.test('Initial state is correct', () => {
+                    const app = new SurveyApp();
+                    if (!Array.isArray(app.surveys)) {
+                        throw new Error('surveys should be an array');
+                    }
+                    if (!Array.isArray(app.responses)) {
+                        throw new Error('responses should be an array');
+                    }
+                    if (app.questionCount !== 1) {
+                        throw new Error('initial question count should be 1');
+                    }
+                });
+
+                // Test 4: Local storage operations work
+                this.test('Local storage operations work', () => {
+                    const app = new SurveyApp();
+                    const testSurvey = {
+                        id: 12345,
+                        title: 'Test Survey',
+                        description: 'Test Description',
+                        questions: [],
+                        createdAt: new Date().toISOString()
+                    };
+                    
+                    app.surveys.push(testSurvey);
+                    app.saveSurveys();
+                    
+                    const saved = JSON.parse(localStorage.getItem('surveys'));
+                    if (!saved || saved.length !== 1 || saved[0].id !== 12345) {
+                        throw new Error('Survey not saved correctly to localStorage');
+                    }
+                });
+
+                // Test 5: Question rendering works
+                this.test('Question rendering works', () => {
+                    const app = new SurveyApp();
+                    const textQuestion = { id: 1, text: 'Test question?', type: 'text', choices: [] };
+                    const html = app.renderQuestion(textQuestion);
+                    
+                    if (!html.includes('Test question?') || !html.includes('input type="text"')) {
+                        throw new Error('Text question not rendered correctly');
+                    }
+                });
+
+                // Display summary
+                setTimeout(() => {
+                    const summaryDiv = document.createElement('div');
+                    summaryDiv.style.cssText = 'margin-top: 20px; padding: 15px; background: #f8f9fa; border: 1px solid #dee2e6;';
+                    summaryDiv.innerHTML = `
+                        <h2>Test Summary</h2>
+                        <p><strong>Passed:</strong> ${this.passed}</p>
+                        <p><strong>Failed:</strong> ${this.failed}</p>
+                        <p><strong>Total:</strong> ${this.passed + this.failed}</p>
+                        <p><strong>Success Rate:</strong> ${Math.round((this.passed / (this.passed + this.failed)) * 100)}%</p>
+                    `;
+                    document.body.appendChild(summaryDiv);
+                }, 100);
+            }
+        }
+
+        // Run tests when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            const testSuite = new TestSuite();
+            testSuite.runTests();
+        });
+    </script>
+</body>
+</html>
